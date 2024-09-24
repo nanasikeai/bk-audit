@@ -170,6 +170,11 @@ export default {
     // },
     // message: '不允许出现特殊字符',
   },
+  log: {
+    label: '完整日志',
+    type: 'string',
+    required: false,
+  },
   query_string: {
     label: '查询语句',
     type: 'expr',
