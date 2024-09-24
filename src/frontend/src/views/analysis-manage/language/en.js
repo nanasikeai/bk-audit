@@ -136,5 +136,6 @@ export default {
     管理空间ID: 'scope id',
     取消: 'Cancel',
     '取消(No)': 'No',
+    请输入完整日志: 'Please enter the Full logs',
   },
 };
