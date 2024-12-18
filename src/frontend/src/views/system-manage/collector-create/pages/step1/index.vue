@@ -518,16 +518,22 @@
     });
   }
 
+  // 是否显示已有数据源特性开关
   const {
     data: showBkbase,
+    run: fetchBkbaseFeature,
   }  = useRequest(CollectorManageService.fetchBkbaseFeature, {
     defaultValue: {
       enabled: false,
     },
-    defaultParams: {
-      feature_id: 'bkbase_data_source',
+    onSuccess: () => {
+      // 如果特性开关true，才获取DataIDList
+      if (showBkbase.value.enabled) {
+        fetchDataIDList({
+          bk_biz_id: formData.bk_biz_id,
+        });
+      }
     },
-    manual: true,
   });
 
 
@@ -575,6 +581,7 @@
     },
   });
 
+  // 获取DataIDList
   const {
     data: configData,
   } = useRequest(RootManageService.config, {
@@ -584,8 +591,8 @@
       if (reportMethod.value === 'bkbase') {
         formData.bk_biz_id = data.bk_biz_id;
       }
-      fetchDataIDList({
-        bk_biz_id: formData.bk_biz_id,
+      fetchBkbaseFeature({
+        feature_id: 'bkbase_data_source',
       });
     },
   });
