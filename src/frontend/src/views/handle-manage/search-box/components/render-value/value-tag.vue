@@ -94,6 +94,8 @@
 
   import useRequest from '@hooks/use-request';
 
+  import { DateRange } from '@blueking/date-picker';
+
   import fieldConfig from '../render-field-config/config';
   import RenderFieldConfig from '../render-field-config/index.vue';
 
@@ -202,7 +204,12 @@
   };
   // 编辑值
   const handleChange = (fieldName: string, fieldValue: any) => {
-    valueMemo = fieldValue;
+    if (config.type === 'datetimerange') {
+      const date = new DateRange(fieldValue, 'YYYY-MM-DD HH:mm:ss', window.timezone);
+      valueMemo = [date.startDisplayText, date.endDisplayText];
+    } else {
+      valueMemo = fieldValue;
+    }
   };
   // 提交编辑状态
   const handleSubmit = () => {

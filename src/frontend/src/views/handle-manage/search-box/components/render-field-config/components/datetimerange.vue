@@ -65,8 +65,12 @@
         return Promise.reject(`${props.name} error`);
       }
       // 每次点击搜索时获取最新的date数据
-      const date = new DateRange(localValue.value, 'YYYY-MM-DD HH:mm:ss', window.timezone);
-      emits('change', props.name, [date.startDisplayText, date.endDisplayText]);
+      if (!localValue.value[0] && !localValue.value[1]) {
+        emits('change', props.name, ['', '']);
+      } else {
+        const date = new DateRange(localValue.value, 'YYYY-MM-DD HH:mm:ss', window.timezone);
+        emits('change', props.name, [date.startDisplayText, date.endDisplayText]);
+      }
       return Promise.resolve({
         [props.name]: localValue.value,
       });
