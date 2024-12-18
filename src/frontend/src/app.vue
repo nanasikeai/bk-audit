@@ -34,7 +34,9 @@
       </template>
       <template #headerRight>
         <bk-dropdown class="site-top-dropdown-menu">
-          <div class="site-help-btn">
+          <div
+            class="site-help-btn"
+            style="margin-right: 9px;">
             <audit-icon
               style="font-size: 19px;"
               :type="locale === 'zh-CN' ? 'lang-zh' : 'lang-en'" />
