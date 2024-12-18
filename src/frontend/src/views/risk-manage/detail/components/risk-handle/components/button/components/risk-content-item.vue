@@ -89,5 +89,9 @@
     font-size: 12px;
     align-items: center;
   }
+
+  p {
+    word-break: break-all
+  }
 }
 </style>
