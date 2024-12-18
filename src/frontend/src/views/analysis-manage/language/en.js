@@ -122,7 +122,7 @@ export default {
     搜索属性: 'Search attr.',
     确定: 'Yes',
     '确定(OK)': 'OK',
-    简体中文: '简体中文',
+    中文: '中文',
     English: 'English',
     上级员工: 'direct supervisor',
     员工状态: 'employee status',

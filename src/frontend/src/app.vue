@@ -48,7 +48,7 @@
                 }"
                 @click="handleSwitchLang('zh-CN')">
                 <audit-icon type="lang-zh" />
-                <span>简体中文</span>
+                <span>中文</span>
               </bk-dropdown-item>
               <bk-dropdown-item
                 class="language-option-item"
