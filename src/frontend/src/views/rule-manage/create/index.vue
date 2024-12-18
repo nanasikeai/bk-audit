@@ -107,9 +107,7 @@
                   label-width="0"
                   :property="`scope.${index}.value`"
                   required
-                  :rules="[
-                    { message: '', trigger: 'change',validator: (value: Array<any>) => handleValidate(value) },
-                  ]">
+                  :rules="[{ message: '', trigger: 'blur', validator: (value: Array<any>) => handleValidate(value)}]">
                   <!-- 策略id特殊处理 -->
                   <bk-select
                     v-if="item.field === 'strategy_id'"
