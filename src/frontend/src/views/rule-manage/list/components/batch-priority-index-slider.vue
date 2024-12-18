@@ -209,13 +209,13 @@
         tmpItem.priority_index = sortPriorityIndex;
         sortPriorityIndex = sortPriorityIndex - 1;
       });
-      nextTick(() => {
-        handlerowDrop();
-      });
       setTimeout(() => {
         cloneTableData.value.forEach((item, index) => {
           const isNew = isNewData(item);
           setNewCreateTrHighlight(index, isNew);
+        });
+        nextTick(() => {
+          handlerowDrop();
         });
       }, 300);
     },
