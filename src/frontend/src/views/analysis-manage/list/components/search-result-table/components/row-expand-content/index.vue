@@ -36,6 +36,7 @@
                 request_id: data.request_id,
                 start_time: datetime[0],
                 end_time: datetime[1],
+                datetime_origin: datetime,
                 searchType: 'value'
               }
             }">

@@ -21,7 +21,7 @@
       style="color: #c4c6cc;"
       type="filter" />
     <value-tag
-      v-for="(value, name) in modelValue"
+      v-for="(value, name) in filteredModelValue"
       :key="name"
       ref="valueTagRef"
       :model="modelValue"
@@ -31,7 +31,7 @@
       @remove="handleRemove" />
     <div
       v-if="isShowClearBtn"
-      v-bk-tooltips="t('清空搜索条件')"
+      v-bk-tooltips="t('重置搜索项')"
       class="search-value-clear-btn"
       @click="handleValueClear">
       <audit-icon type="delete-fill" />
@@ -54,6 +54,7 @@
   interface Emits {
     (e: 'update:modelValue', value: Record<string, any>): void;
     (e: 'submit'): void;
+    (e: 'clear'): void,
   }
 
   const props = defineProps<Props>();
@@ -63,6 +64,13 @@
 
   const valueTagRef = ref();
   const isShowClearBtn = computed(() => Object.keys(props.modelValue).length > 1);
+
+  const filteredModelValue = computed(() => Object.keys(props.modelValue).reduce<Record<string, any>>((acc, key) => {
+    if (key !== 'datetime_origin') {
+      acc[key] = props.modelValue[key];
+    }
+    return acc;
+  }, {}));
 
   const handleChange = (fieldName: string, fieldValue: any) => {
     const result = { ...props.modelValue };
@@ -85,11 +93,7 @@
 
   // 移除所有
   const handleValueClear = () => {
-    const result = {
-      datetime: props.modelValue.datetime,
-    };
-    emits('update:modelValue', result);
-    emits('submit');
+    emits('clear');
   };
 </script>
 <style lang="postcss">
@@ -114,7 +118,7 @@
       cursor: pointer;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s;
+      transition: all .15s;
 
       &:hover {
         color: #dcdee5;
