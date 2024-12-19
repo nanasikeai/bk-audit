@@ -238,7 +238,7 @@
     }
 
     .content-box {
-      /* height: calc(100vh - 180px); */
+      height: calc(1120px - 56px);
       padding: 0 8px;
     }
 
