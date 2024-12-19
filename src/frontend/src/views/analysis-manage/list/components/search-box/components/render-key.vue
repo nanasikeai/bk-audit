@@ -87,7 +87,6 @@
   </div>
 </template>
 <script setup lang="ts">
-  import dayjs from 'dayjs';
   import _ from 'lodash';
   import {
     onBeforeUnmount,
@@ -107,6 +106,7 @@
   interface Emits {
     (e: 'update:modelValue', value: Record<string, any>): void,
     (e: 'submit'): void,
+    (e: 'clear'): void,
   }
 
   const props = defineProps<Props>();
@@ -164,16 +164,7 @@
   };
   // 重置所有搜索条件
   const handleReset = () => {
-    localSearchModel.value = {
-      datetime: [
-        dayjs(Date.now() - 900000).format('YYYY-MM-DD HH:mm:ss'),
-        dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      ],
-      datetime_origin: [
-        'now-15m',
-        'now',
-      ],
-    };
+    emits('clear');
   };
 
   const boxRowStyle = ref({

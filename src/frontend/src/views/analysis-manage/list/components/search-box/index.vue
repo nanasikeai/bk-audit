@@ -20,6 +20,7 @@
       <component
         :is="renderComponent"
         v-model="searchModel"
+        @clear="handleClear"
         @submit="handleSubmit" />
     </keep-alive>
     <div
@@ -136,25 +137,29 @@
     emit('change', result);
   };
 
+  const handleClear = () => {
+    searchModel.value = {
+      // 用于查询的date参数
+      datetime: [
+        dayjs(Date.now() - 3600000).format('YYYY-MM-DD HH:mm:ss'),
+        dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      ],
+      // 用于now语法的date参数（只用使用now语法，选择最近时间才会实时更新）
+      datetime_origin: [
+        'now-1h',
+        'now',
+      ],
+    };
+    handleSubmit();
+  };
+
   onMounted(() => {
     handleSubmit();
   });
 
   defineExpose<Exposes>({
     clearValue() {
-      searchModel.value = {
-        // 用于查询的date参数
-        datetime: [
-          dayjs(Date.now() - 3600000).format('YYYY-MM-DD HH:mm:ss'),
-          dayjs().format('YYYY-MM-DD HH:mm:ss'),
-        ],
-        // 用于now语法的date参数（只用使用now语法，选择最近时间才会实时更新）
-        datetime_origin: [
-          'now-1h',
-          'now',
-        ],
-      };
-      handleSubmit();
+      handleClear();
     },
   });
 

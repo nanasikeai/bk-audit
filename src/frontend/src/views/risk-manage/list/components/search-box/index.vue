@@ -139,8 +139,14 @@
   };
   const handleClear = () => {
     searchModel.value = {
-      datetime: ['', ''],
-      datetime_origin: ['', ''],
+      datetime: [
+        dayjs(Date.now() - (86400000 * 182)).format('YYYY-MM-DD HH:mm:ss'),
+        dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      ],
+      datetime_origin: [
+        'now-6M',
+        'now',
+      ],
     };
     handleSubmit();
   };

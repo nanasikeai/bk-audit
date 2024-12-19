@@ -108,11 +108,6 @@
   };
   // 重置所有搜索条件
   const handleReset = () => {
-    localSearchModel.value = {
-      datetime: ['', ''],
-      datetime_origin: ['', ''],
-    };
-    emits('update:modelValue', localSearchModel.value);
     emits('clear');
   };
 
