@@ -244,7 +244,7 @@ export default {
     请先在上方完成调试: 'Please complete debugging first',
     正则表达式不能为空: 'Regex. is required',
     分隔符不能为空: 'Delimiter is required',
-    数据为空: 'Data is empty',
+    搜索为空: 'Search is empty',
     '确认删除通知组？': 'Are you sure to delete the Notification Group ?',
     未配置: 'Not ready',
     部署中: 'Deploying',
