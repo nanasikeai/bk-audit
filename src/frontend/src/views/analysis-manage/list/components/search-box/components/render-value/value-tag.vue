@@ -82,6 +82,7 @@
   import {
     computed,
     onBeforeUnmount,
+    onDeactivated,
     onMounted,
     ref,
     shallowRef,
@@ -247,10 +248,18 @@
     });
   });
 
-  onBeforeUnmount(() => {
+  const resetTippy = () => {
     tippyIns.hide();
     tippyIns.unmount();
     tippyIns.destroy();
+  };
+
+  onDeactivated(() => {
+    resetTippy();
+  });
+
+  onBeforeUnmount(() => {
+    resetTippy();
   });
 
   defineExpose<Exposes>({

@@ -20,6 +20,7 @@
       <component
         :is="renderComponent"
         v-model="searchModel"
+        @change-render-type="handleRenderTypeChange"
         @clear="handleClear"
         @submit="handleSubmit" />
     </keep-alive>

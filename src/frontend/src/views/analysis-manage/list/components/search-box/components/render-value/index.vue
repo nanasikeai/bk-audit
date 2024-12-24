@@ -55,6 +55,7 @@
     (e: 'update:modelValue', value: Record<string, any>): void;
     (e: 'submit'): void;
     (e: 'clear'): void,
+    (e: 'changeRenderType'): void,
   }
 
   const props = defineProps<Props>();
@@ -94,6 +95,7 @@
   // 移除所有
   const handleValueClear = () => {
     emits('clear');
+    emits('changeRenderType');
   };
 </script>
 <style lang="postcss">
