@@ -248,18 +248,14 @@
     });
   });
 
-  const resetTippy = () => {
-    tippyIns.hide();
-    tippyIns.unmount();
-    tippyIns.destroy();
-  };
-
   onDeactivated(() => {
-    resetTippy();
+    tippyIns.hide();
   });
 
   onBeforeUnmount(() => {
-    resetTippy();
+    tippyIns.hide();
+    tippyIns.unmount();
+    tippyIns.destroy();
   });
 
   defineExpose<Exposes>({
