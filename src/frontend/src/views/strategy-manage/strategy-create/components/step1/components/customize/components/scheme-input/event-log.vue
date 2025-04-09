@@ -22,7 +22,7 @@
       property="configs.data_source.system_ids">
       <span>
         <bk-select
-          v-model="formData.configs.data_source.system_ids"
+          v-model="systemIds"
           filterable
           :loading="isSystemListLoading"
           multiple
@@ -31,7 +31,7 @@
           :placeholder="t('请选择')"
           @change="handleChangeSystem">
           <bk-option
-            v-for="(system, systemIndex) in (props.tableData && !props.tableData.length) ? [] : statusSystems"
+            v-for="(system, systemIndex) in statusSystems"
             :key="systemIndex"
             :disabled="system.status == 'unset'"
             :label="system.name"
@@ -55,7 +55,6 @@
 <script setup lang='ts'>
   import {
     ref,
-    watch,
   } from 'vue';
   import { useI18n } from 'vue-i18n';
 
@@ -66,43 +65,16 @@
 
   interface Expose {
     resetFormData: () => void,
-    setConfigs: (config: IFormData['configs']) => void;
+    setConfigs: (config: Array<string>) => void;
   }
 
   interface Emits {
-    (e: 'updateDataSource', value: IFormData['configs']['data_source']): void,
+    (e: 'updateSystem', value: Array<string>): void,
   }
 
-  interface Props {
-    tableData: Array<{
-      label: string;
-      value: string;
-      children: Array<{
-        label: string;
-        value: string;
-      }>
-    }>;
-  }
-
-  interface IFormData {
-    configs: {
-      data_source: {
-        system_ids: string[],
-        rt_id: string,
-      },
-    },
-  }
-  const props = defineProps<Props>();
   const emits = defineEmits<Emits>();
   const { t } = useI18n();
-  const formData = ref<IFormData>({
-    configs: {
-      data_source: {
-        system_ids: [],
-        rt_id: '',
-      },
-    },
-  });
+  const systemIds = ref<Array<string>>([]);
   const statusSystems = ref<Array<Record<string, any>>>([]);
 
   // 获取系统
@@ -144,25 +116,16 @@
 
   // 选择系统
   const handleChangeSystem = () => {
-    emits('updateDataSource', formData.value.configs.data_source);
+    emits('updateSystem', systemIds.value);
   };
-
-  watch(() => props.tableData, (data) => {
-    if (data) {
-      formData.value.configs.data_source.rt_id = data[0]?.value || '';
-      emits('updateDataSource', formData.value.configs.data_source);
-    }
-  }, {
-    immediate: true,
-  });
 
   defineExpose<Expose>({
     resetFormData: () => {
-      formData.value.configs.data_source.system_ids = [];
+      systemIds.value = [];
     },
-    setConfigs(configs: IFormData['configs']) {
-      formData.value.configs.data_source.system_ids = configs.data_source.system_ids;
-      emits('updateDataSource', formData.value.configs.data_source);
+    setConfigs(ids: Array<string>) {
+      systemIds.value = ids;
+      emits('updateSystem', systemIds.value);
     },
   });
 </script>
