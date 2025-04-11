@@ -141,7 +141,9 @@
           </template>
           <rules-component
             ref="rulesComponentRef"
+            :aggregate-list="aggregateList"
             :config-type="formData.configs.config_type"
+            :expected-result="formData.configs.select"
             :table-fields="tableFields"
             @update-where="handleUpdateWhere" />
         </bk-form-item>
@@ -264,6 +266,7 @@
   import {
     computed,
     h,
+    nextTick,
     ref,
     watch  } from 'vue';
   import { useI18n } from 'vue-i18n';
@@ -389,8 +392,11 @@
   const allConfigTypeTable = ref<Array<ConfigTypeTableItem>>([]);
   const originSourceType = ref<'batch_join_source' | 'stream_source' | ''>('');
 
-  const hasData = computed(() => formData.value.configs.select.length > 0
-    || formData.value.configs.where.conditions.length > 0);
+  const hasData = computed(() => Boolean(formData.value.configs.select.length
+    || (formData.value.configs.where.conditions.length
+      && formData.value.configs.where.conditions[0].conditions.length
+      && formData.value.configs.where.conditions[0].conditions[0].condition.field
+      && formData.value.configs.where.conditions[0].conditions[0].condition.field.raw_name)));
 
   const getSourceTypeStatus = computed(() => (type: 'batch_join_source' | 'stream_source') => {
     // 检查该类型是否在支持列表中，或者对于stream_source类型是否存在聚合字段有不为null的aggregate，或者是编辑模式
@@ -667,6 +673,19 @@
     ...overrides,
   });
 
+  // 重置数据源和表单
+  const resetDataSource = () => {
+    formData.value.configs.data_source = {
+      ...formData.value.configs.data_source,
+      ...{
+        rt_id: '',
+        link_table: { uid: '', version: 0 },
+        system_ids: [],
+      },
+    };
+    [eventLogRef, rulesComponentRef, expectedResultsRef].forEach(ref => ref.value?.resetFormData?.());
+  };
+
   // 选择tableid和数据源类型
   const handleChangeTable = (value: Array<string>) => {
     const handleTableChangeCore = (value: Array<string>) => {
@@ -676,24 +695,16 @@
       // 更新数据源类型
       formData.value.configs.config_type = configType || '';
 
-      // 重置数据源和表单
-      const resetDataSource = () => {
-        formData.value.configs.data_source = {
-          ...formData.value.configs.data_source,
-          ...{
-            rt_id: '',
-            link_table: { uid: '', version: 0 },
-            system_ids: [],
-          },
-        };
-        [eventLogRef, rulesComponentRef, expectedResultsRef].forEach(ref => ref.value?.resetFormData?.());
-      };
-
       // 无有效类型时重置数据
       if (!configType) {
         resetDataSource();
         tableFields.value = [];
         return;
+      }
+
+      // 有填写预期结果、风险发现规则，重置
+      if (hasData.value) {
+        resetDataSource();
       }
 
       // 统一处理数据源设置
@@ -706,11 +717,6 @@
           fetDatabaseTableFields(rtIdOrUid);
           fetchSourceType({ config_type: configType, rt_id: rtIdOrUid });
         }
-      }
-
-      // 有填写预期结果、风险发现规则，重置
-      if (hasData.value) {
-        resetDataSource();
       }
 
       // 更新前次记录
@@ -756,9 +762,14 @@
   const changeTableId = () => {
     const tableItem = allConfigTypeTable.value.find(item => item.value === formData.value.configs.config_type);
     if (!tableItem) return;
-    console.log('tableItem', tableItem);
     // 联表和日志只有两层，直接拼接
-    if (tableItem.value === 'EventLog' || tableItem.value === 'LinkTable') {
+    if (tableItem.value === 'EventLog') {
+      tableId.value = [formData.value.configs.config_type, formData.value.configs.data_source.rt_id as string];
+      previousTableId.value = tableId.value ;
+      nextTick(() => {
+        eventLogRef.value?.setConfigs(formData.value.configs.data_source.system_ids);
+      });
+    } else if (tableItem.value === 'LinkTable') {
       tableId.value = [formData.value.configs.config_type, formData.value.configs.data_source.link_table.uid];
       previousTableId.value = tableId.value ;
     } else {
