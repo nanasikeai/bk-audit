@@ -350,23 +350,13 @@
 
   // 清空表单验证
   const handleReset = () => {
-    formRef.value.clearValidate();
-    Object.keys(searchForm.value).forEach((key) => {
-      searchForm.value[key] = '';
-    });
-    searchList.value = searchList.value.map(item => ({
-      ...item,
-      value: null,
-    }));
     pagination.value.current = 1;
     pagination.value.count = 0;
     pagination.value.limit = 100;
+    itemInfo.value = undefined;
+    searchList.value = [];
     tableData.value = [];
-    if (formItemRef.value) {
-      formItemRef.value.forEach((item: any) => {
-        item?.resetValue();
-      });
-    }
+    dialogIndex.value = 2000;
   };
 
   const handleFormItemChange = (val: any, item: SearchItem) => {
