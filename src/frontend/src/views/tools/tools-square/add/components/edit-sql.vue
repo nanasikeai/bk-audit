@@ -122,6 +122,7 @@
   const formData = ref({
     sql: '',
     dialect: 'mysql',
+    with_permission: true,
   });
 
   // 解析sql
