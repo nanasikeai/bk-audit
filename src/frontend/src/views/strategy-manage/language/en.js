@@ -305,5 +305,11 @@ export default {
     数据预览: 'Data preview',
     重复: 'repeat',
     在单据中展示: 'display in a ticket',
+    请点击配置: 'Please click to configure',
+    配置数据下钻: 'Configure data drilling',
+    字段下钻: 'Field drilling',
+    为储存值配置可读的展示文本: 'Configure readable display text for stored values',
+    字段值映射: 'Field Value Mapping',
+    字段关联: 'Field Association',
   },
 };

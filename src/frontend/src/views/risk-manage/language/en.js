@@ -127,5 +127,7 @@ export default {
     请选择关注人: 'Please select the focus person',
     请选择要操作的数据: 'Please select the data to operate',
     请选择要导出的数据: 'Please select the data to export',
+    映射对象: `key：{key}
+    name：{name}`,  // 换行特意为之
   },
 };

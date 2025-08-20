@@ -535,4 +535,5 @@ export default {
   以下是3级字段的实例: 'Example of a 3-level field',
   收起: 'Collapse',
   展开: 'Expand',
+  工具: 'Tools',
 };
