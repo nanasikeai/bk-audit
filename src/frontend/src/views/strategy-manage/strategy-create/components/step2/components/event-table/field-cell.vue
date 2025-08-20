@@ -62,7 +62,7 @@
 
     <div
       v-else-if="fieldKey === 'enum_mappings' && localEventItem.enum_mappings"
-      v-bk-tooltips="t('点击配置字段值映射')"
+      v-bk-tooltips="t('请点击配置')"
       class="field-cell-div"
       style="width: 100%;cursor: pointer;"
       @click="handleFiledDict">
@@ -90,6 +90,7 @@
     <template v-else-if="fieldKey === 'drill_config' && localEventItem.drill_config">
       <div
         v-if="!localEventItem.drill_config.tool.uid"
+        v-bk-tooltips="t('请点击配置')"
         class="field-cell-div"
         style="color: #c4c6cc;"
         @click="() => handleClick()">
@@ -97,6 +98,7 @@
       </div>
       <div
         v-else
+        v-bk-tooltips="t('请点击配置')"
         class="field-cell-div"
         @click="() => handleClick(localEventItem.drill_config)">
         <audit-icon
