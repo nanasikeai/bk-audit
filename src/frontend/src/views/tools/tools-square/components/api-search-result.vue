@@ -23,7 +23,9 @@
       :key="groupIndex"
       style="margin-bottom: 16px;"
       v-bind="{ label: group.name, isActive: true }">
-      <div class="card-content">
+      <div
+        class="card-content"
+        :class="[groupData.length === 1 ? 'single-group' : '']">
         <!-- KV 字段展示 -->
         <template v-if="group.kv_fields && group.kv_fields.length > 0">
           <render-info-block
@@ -124,7 +126,14 @@
             v-for="(tableField, tableIndex) in group.table_fields"
             :key="tableIndex">
             <div class="top-search-table-title">
-              {{ tableField.display_name || tableField.raw_name }}
+              <span
+                v-bk-tooltips="{
+                  disabled: !tableField.description,
+                  content: tableField.description
+                }"
+                :class="[tableField.description ? 'tips' : '']">
+                {{ tableField.display_name || tableField.raw_name }}
+              </span>
             </div>
             <bk-table
               :key="key"
@@ -345,6 +354,7 @@
     isLoading,
     resetGroupData: () => {
       groupData.value = [];
+      toolExecuteData.value = {};
     },
   });
 
@@ -618,7 +628,7 @@
             tableData: [],
             pagination: {
               count: 0,
-              limit: 100,
+              limit: 10,
               current: 1,
               limitList: [10, 20, 50, 100, 200, 500, 1000],
             },
@@ -700,5 +710,10 @@
       min-width: revert !important;
     }
   }
+}
+
+.single-group {
+  padding: 0;
+  background-color: #fff;
 }
 </style>
